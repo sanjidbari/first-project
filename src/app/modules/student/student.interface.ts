@@ -8,10 +8,10 @@ export type Guardian = {
 };
 
 export type UserName = {
-    firstName: string;
-    middleName?: string;
-    lastName: string;
-}
+  firstName: string;
+  middleName?: string;
+  lastName: string;
+};
 
 export type Student = {
   id: string;
