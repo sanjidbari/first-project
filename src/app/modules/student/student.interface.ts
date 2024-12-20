@@ -15,8 +15,9 @@ export type UserName = {
 
 export type Student = {
   id: string;
+  password: string;
   name: UserName;
-  gender: 'male' | 'female';
+  gender: 'male' | 'female' | 'other';
   dOB: string;
   email: string;
   contactNo: string;
