@@ -1,61 +1,72 @@
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { Guardian, Student, UserName } from './student.interface';
-import bcrypt from 'bcrypt';
-import { config, configDotenv } from 'dotenv';
 
-
-const userNameSchema = new Schema<UserName>({
-  firstName: {
-    type: String,
-    required: [true, 'First name is required']
+const userNameSchema = new Schema<UserName>(
+  {
+    firstName: {
+      type: String,
+      required: [true, 'First name is required'],
     },
-  middleName: {
-    type: String,
+    middleName: {
+      type: String,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
   },
-  lastName: {
-    type: String,
-    required: true,
-  },
-});
+  { _id: false },
+);
 
-const guardianSchema = new Schema<Guardian>({
-  fatherName: {
-    type: String,
-    required: true,
+const guardianSchema = new Schema<Guardian>(
+  {
+    fatherName: {
+      type: String,
+      required: true,
+    },
+    fatherOccupation: {
+      type: String,
+      required: true,
+    },
+    fatherContactNo: {
+      type: String,
+      required: true,
+    },
+    motherName: {
+      type: String,
+      required: true,
+    },
+    motherOccupation: {
+      type: String,
+      required: true,
+    },
+    motherContactNo: {
+      type: String,
+      required: true,
+    },
   },
-  fatherOccupation: {
-    type: String,
-    required: true,
-  },
-  fatherContactNo: {
-    type: String,
-    required: true,
-  },
-  motherName: {
-    type: String,
-    required: true,
-  },
-  motherOccupation: {
-    type: String,
-    required: true,
-  },
-  motherContactNo: {
-    type: String,
-    required: true,
-  },
-});
+  { _id: false },
+);
 
 const studentSchema = new Schema<Student>({
   id: { type: String, required: true, unique: true },
-  password: { type: String, required: true},
-  name: {userNameSchema},
+  user: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    unique: true,
+    ref: 'User',
+  },
+  name: {
+    type: userNameSchema,
+    required: true,
+  },
   gender: {
     type: String,
     enum: {
       values: ['male', 'female'],
-      message: '{VALUE} is not valid'
+      message: '{VALUE} is not valid',
     },
-    required: true
+    required: true,
   },
   dOB: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -67,24 +78,12 @@ const studentSchema = new Schema<Student>({
   },
   presentAddress: { type: String, required: true },
   permanentAddress: { type: String, required: true },
-  guardian: {guardianSchema},
+  guardian: {
+    type: guardianSchema,
+    required: true,
+  },
   profileImg: { type: String },
-  isActive: {
-    type: String,
-    enum: ['active', 'inactive'],
-    default: 'active',
-  }
+  isDeleted: { type: Boolean, default: false },
 });
-
-studentSchema.pre('save', async function (next) {
-  const user = this
-  user.password = await bcrypt.hash(user.password, 10)
-  next()
-});
-
-studentSchema.post('save', function(doc, next) {
-  doc.password = '';
-  next();
-})
 
 export const StudentModel = model<Student>('Student', studentSchema);

@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 export type Guardian = {
   fatherName: string;
   fatherOccupation: string;
@@ -15,6 +17,7 @@ export type UserName = {
 
 export type Student = {
   id: string;
+  user: Types.ObjectId;
   password: string;
   name: UserName;
   gender: 'male' | 'female' | 'other';
@@ -27,5 +30,5 @@ export type Student = {
   permanentAddress: string;
   guardian: Guardian;
   profileImg?: string;
-  isActive: 'active' | 'inActive';
+  isDeleted: boolean;
 };

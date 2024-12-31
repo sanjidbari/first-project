@@ -22,7 +22,6 @@ const guardianValidationSchema = z.object({
 
 const studentValidationSchema = z.object({
   id: z.string().nonempty('ID is required.'),
-  password: z.string().nonempty('password is required.'),
   name: userNameValidationSchema,
   gender: z.enum(['male', 'female', 'other'], {
     errorMap: () => ({ message: 'Gender must be either male or female.' }),
@@ -43,7 +42,6 @@ const studentValidationSchema = z.object({
   permanentAddress: z.string().nonempty('Permanent address is required.'),
   guardian: guardianValidationSchema,
   profileImg: z.string().url().optional(),
-  isActive: z.enum(['active', 'inActive']).default('active'),
 });
 
 export default studentValidationSchema;
