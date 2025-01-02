@@ -30,5 +30,6 @@ export type Student = {
   permanentAddress: string;
   guardian: Guardian;
   profileImg?: string;
+  admissionSem: Types.ObjectId;
   isDeleted: boolean;
 };

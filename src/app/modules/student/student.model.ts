@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, Types, model } from 'mongoose';
 import { Guardian, Student, UserName } from './student.interface';
 
 const userNameSchema = new Schema<UserName>(
@@ -53,7 +53,6 @@ const studentSchema = new Schema<Student>({
   user: {
     type: Schema.Types.ObjectId,
     required: true,
-    unique: true,
     ref: 'User',
   },
   name: {
@@ -83,6 +82,10 @@ const studentSchema = new Schema<Student>({
     required: true,
   },
   profileImg: { type: String },
+  admissionSem: {
+    type: Schema.Types.ObjectId,
+    ref: 'AcademicSem',
+  },
   isDeleted: { type: Boolean, default: false },
 });
 

@@ -1,22 +1,30 @@
 import config from '../../config';
+import { AcademicSem } from '../academicSem/academicSem.interface';
+import { academicSemModel } from '../academicSem/academicSem.model';
 import { Student } from '../student/student.interface';
 import { StudentModel } from '../student/student.model';
 import { User } from './user.interface';
 import { UserModel } from './user.model';
+import { generateStudentId } from './user.utils';
 
-const createStudentIntoDB = async (studentData: Student, password: string) => {
+const createStudentIntoDB = async (payload: Student, password: string) => {
   const user: Partial<User> = {};
 
   user.password = password || (config.default_pass as string);
 
   user.role = 'student';
+  const admissionSem = await academicSemModel.findById(payload.admissionSem);
 
-  user.id = '2003010001';
+  if (admissionSem) {
+    user.id = generateStudentId(admissionSem);
+  } else {
+    throw new Error('Admission semester not found');
+  }
   const newUser = await UserModel.create(user);
   if (Object.keys(newUser).length) {
-    studentData.id = newUser.id;
-    studentData.user = newUser._id;
-    const newStudent = await StudentModel.create(studentData);
+    payload.id = newUser.id;
+    payload.user = newUser._id;
+    const newStudent = await StudentModel.create(payload);
     return newStudent;
   }
 };

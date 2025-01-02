@@ -1,14 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+import { ErrorRequestHandler } from 'express';
 
-const globalErrorHandler: ErrorRequestHandler = (
-  err: any,
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  const statusCode = 500;
-  const message = 'Something went wrong';
+const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  const statusCode = err.status || 500;
+  const message = err.message || 'Something went wrong';
 
   res.status(statusCode).json({
     success: false,
