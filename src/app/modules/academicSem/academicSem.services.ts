@@ -21,6 +21,31 @@ const createAcademicSemIntoDB = async (payload: AcademicSem) => {
   return result;
 };
 
+const getAllAcademicSemFromDB = async () => {
+  const result = await academicSemModel.find();
+  return result;
+};
+
+const getSingleAcademicSem = async (payload: string) => {
+  const result = await academicSemModel.findById({ _id: payload });
+  return result;
+};
+
+const updateAcademicSem = async (
+  semesterId: string,
+  semesterData: AcademicSem,
+) => {
+  const result = await academicSemModel.findOneAndUpdate(
+    { _id: semesterId },
+    semesterData,
+    { new: true },
+  );
+  return result;
+};
+
 export const AcademicSemServices = {
   createAcademicSemIntoDB,
+  getAllAcademicSemFromDB,
+  getSingleAcademicSem,
+  updateAcademicSem,
 };

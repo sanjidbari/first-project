@@ -10,5 +10,12 @@ router.post(
   validateRequest(AcademicSemValidations.academicSemValidationSchema),
   AcademicSemController.createAcademicSem,
 );
+router.get('/get-academic-sem', AcademicSemController.getAllAcademicSem);
+router.get('/:semesterId', AcademicSemController.getSingleAcademicSem);
+router.patch(
+  '/:semesterId',
+  validateRequest(AcademicSemValidations.updateAcademicSemValidationSchema),
+  AcademicSemController.updateAcademicSem,
+);
 
 export const AcademicSemRoutes = router;

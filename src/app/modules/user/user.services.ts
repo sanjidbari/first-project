@@ -1,5 +1,5 @@
 import config from '../../config';
-import { AcademicSem } from '../academicSem/academicSem.interface';
+import { AcademicSemWithId } from '../academicSem/academicSem.interface';
 import { academicSemModel } from '../academicSem/academicSem.model';
 import { Student } from '../student/student.interface';
 import { StudentModel } from '../student/student.model';
@@ -14,9 +14,8 @@ const createStudentIntoDB = async (payload: Student, password: string) => {
 
   user.role = 'student';
   const admissionSem = await academicSemModel.findById(payload.admissionSem);
-
   if (admissionSem) {
-    user.id = generateStudentId(admissionSem);
+    user.id = await generateStudentId(admissionSem);
   } else {
     throw new Error('Admission semester not found');
   }

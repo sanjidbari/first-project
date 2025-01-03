@@ -48,45 +48,50 @@ const guardianSchema = new Schema<Guardian>(
   { _id: false },
 );
 
-const studentSchema = new Schema<Student>({
-  id: { type: String, required: true, unique: true },
-  user: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: 'User',
-  },
-  name: {
-    type: userNameSchema,
-    required: true,
-  },
-  gender: {
-    type: String,
-    enum: {
-      values: ['male', 'female'],
-      message: '{VALUE} is not valid',
+const studentSchema = new Schema<Student>(
+  {
+    id: { type: String, required: true, unique: true },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
     },
-    required: true,
+    name: {
+      type: userNameSchema,
+      required: true,
+    },
+    gender: {
+      type: String,
+      enum: {
+        values: ['male', 'female'],
+        message: '{VALUE} is not valid',
+      },
+      required: true,
+    },
+    dOB: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    contactNo: { type: String, required: true },
+    emergencyNo: { type: String, required: true },
+    bloodGroup: {
+      type: String,
+      enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+    },
+    presentAddress: { type: String, required: true },
+    permanentAddress: { type: String, required: true },
+    guardian: {
+      type: guardianSchema,
+      required: true,
+    },
+    profileImg: { type: String },
+    admissionSem: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicSem',
+    },
+    isDeleted: { type: Boolean, default: false },
   },
-  dOB: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  contactNo: { type: String, required: true },
-  emergencyNo: { type: String, required: true },
-  bloodGroup: {
-    type: String,
-    enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+  {
+    timestamps: true,
   },
-  presentAddress: { type: String, required: true },
-  permanentAddress: { type: String, required: true },
-  guardian: {
-    type: guardianSchema,
-    required: true,
-  },
-  profileImg: { type: String },
-  admissionSem: {
-    type: Schema.Types.ObjectId,
-    ref: 'AcademicSem',
-  },
-  isDeleted: { type: Boolean, default: false },
-});
+);
 
 export const StudentModel = model<Student>('Student', studentSchema);

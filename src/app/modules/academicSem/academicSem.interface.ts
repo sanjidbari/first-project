@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 export type TMonths =
   | 'January'
   | 'February'
@@ -21,4 +23,8 @@ export type AcademicSem = {
   year: string;
   startMonth: TMonths;
   endMonth: TMonths;
+};
+
+export type AcademicSemWithId = AcademicSem & {
+  _id: Types.ObjectId;
 };
